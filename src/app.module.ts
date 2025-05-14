@@ -12,6 +12,7 @@ import { getTypeOrmConfig } from './config/database.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { FileModule } from './file/file.module';
+import { CartModule } from './modules/cart/cart.module';
 
 @Module({
   imports: [
@@ -39,6 +40,8 @@ import { FileModule } from './file/file.module';
     AuthModule,
 
     FileModule,
+
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],

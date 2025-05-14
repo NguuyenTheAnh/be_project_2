@@ -1,0 +1,9 @@
+Guest
+- guest (guest_id, guest_name, table_id, cart_id, refresh_token)
+- create guest by using qr code in table -> create cart_id for that guest 
+- qr code -> api: if token expired or don't have token, show UI for entering guest's name -> save:
+    + post /guest/:table_id (create new guest)
+    + post /cart (create new cart)
+
+Table:
+- create qr for each table

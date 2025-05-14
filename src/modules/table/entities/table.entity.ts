@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Guest } from '@/modules/guest/entities/guest.entity';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('table')
 export class Table {
@@ -22,6 +23,9 @@ export class Table {
         enum: ['Available', 'Unavailable'],
     })
     status: string;
+
+    @OneToMany(() => Guest, guest => guest.table)
+    guests: Guest[];
 
     @CreateDateColumn()
     created_at: Date;
