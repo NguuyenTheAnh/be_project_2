@@ -18,10 +18,6 @@ export class CreateAccountDto {
     phone?: string;
 
     @IsOptional()
-    @IsString()
-    avatar?: string;
-
-    @IsOptional()
     @IsBoolean()
     is_active?: boolean;
 }

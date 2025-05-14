@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import ms, { StringValue } from 'ms';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
+import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -36,12 +37,14 @@ export class AuthService {
     }
 
     async login(user: any, response: Response) {
-        const { account_id, email, role } = user;
+        const { account_id, email, role, phone, name } = user;
         const payload = {
             sub: "token login",
             iss: "from server",
             account_id,
             email,
+            phone,
+            name,
             role
         };
 
@@ -55,19 +58,18 @@ export class AuthService {
             httpOnly: true
         })
 
-
-        console.log('Response headers after setting cookie:', response.getHeaders());
-
         return {
             access_token: this.jwtService.sign(payload),
             user: {
                 account_id,
                 email,
+                phone,
+                name,
                 role
             }
         };
     }
-    async register(registerDto: any) {
+    async register(registerDto: RegisterDto) {
         // Implement your registration logic here
         // For example, you might want to hash the password and save the user to the database
         const { email, password } = registerDto;
@@ -92,12 +94,14 @@ export class AuthService {
 
             let user = await this.accountService.findUserByToken(refreshToken);
             if (user) {
-                const { account_id, email, role } = user;
+                const { account_id, email, role, phone, name } = user;
                 const payload = {
                     sub: "token refresh",
                     iss: "from server",
                     account_id,
                     email,
+                    phone,
+                    name,
                     role
                 };
 
@@ -117,6 +121,8 @@ export class AuthService {
                     user: {
                         account_id,
                         email,
+                        phone,
+                        name,
                         role
                     }
                 };

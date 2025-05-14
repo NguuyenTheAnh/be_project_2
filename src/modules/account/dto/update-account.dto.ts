@@ -11,9 +11,5 @@ export class UpdateAccountDto {
 
     @IsOptional()
     @IsString()
-    avatar?: string;
-
-    @IsOptional()
-    @IsBoolean()
-    is_active?: boolean;
+    password?: string;
 }

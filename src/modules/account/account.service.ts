@@ -4,6 +4,7 @@ import { UpdateAccountDto } from './dto/update-account.dto';
 import { Repository } from 'typeorm';
 import { Account } from './entities/account.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { hashPassword } from '@/helper/bcrypt.helper';
 
 @Injectable()
 export class AccountService {
@@ -25,12 +26,27 @@ export class AccountService {
     return `This action returns a #${id} account`;
   }
 
-  update(id: number, updateAccountDto: UpdateAccountDto) {
-    return `This action updates a #${id} account`;
+  async update(id: number, updateAccountDto: UpdateAccountDto) {
+    if (updateAccountDto?.password) {
+      // Hash the password and save the user
+      const hashedPassword = await hashPassword(updateAccountDto.password as string);
+      updateAccountDto = {
+        ...updateAccountDto, password: hashedPassword
+      }
+    }
+
+    return await this.accountRepository.update(
+      { account_id: id },
+      {
+        ...updateAccountDto
+      }
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} account`;
+  async remove(id: number) {
+    // Soft delete the account
+    return await this.accountRepository.softDelete({ account_id: id });
+
   }
 
   async findByEmail(email: string) {

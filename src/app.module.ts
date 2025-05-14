@@ -11,6 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { getTypeOrmConfig } from './config/database.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -36,6 +37,8 @@ import { AuthModule } from './auth/auth.module';
     }),
 
     AuthModule,
+
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

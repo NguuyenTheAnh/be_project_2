@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, DeleteDateColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('account')
 export class Account {
@@ -20,21 +20,18 @@ export class Account {
     @Column({ length: 50, nullable: true })
     phone: string;
 
-    @Column({ length: 255, nullable: true })
-    avatar: string;
-
-    @Column({ default: false })
+    @Column({ default: true })
     is_active: boolean;
 
     @Column({ length: 500, nullable: true })
     refresh_token: string;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    @CreateDateColumn()
     created_at: Date;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    @UpdateDateColumn()
     updated_at: Date;
 
-    @Column({ type: 'timestamp', nullable: true })
+    @DeleteDateColumn()
     deleted_at: Date;
 }
