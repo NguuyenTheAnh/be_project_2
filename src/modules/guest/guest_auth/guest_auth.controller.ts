@@ -59,4 +59,51 @@ export class GuestAuthController {
   ) {
     return this.dishService.findAll(page, limit, category, status, search, sort);
   }
+
+  @Post('cart')
+  @Public()
+  @UseGuards(JwtGuestAuthGuard)
+  @ResponseMessage('Add dish into cart')
+  addItemIntoCart(
+    @Req() req: any,
+    @Body('dish_id') dish_id: number
+  ) {
+    return this.guestAuthService.addItemIntoCart(+req.user.cart_id, +dish_id);
+  }
+
+  @Get('cart')
+  @Public()
+  @UseGuards(JwtGuestAuthGuard)
+  @ResponseMessage('Get all dish cart')
+  getCart(
+    @Req() req: any,
+  ) {
+    return this.guestAuthService.getAllItemCart(+req.user.cart_id);
+  }
+
+  @Patch('cart')
+  @Public()
+  @UseGuards(JwtGuestAuthGuard)
+  @ResponseMessage('Update dish in cart')
+  updateDishInCart(
+    @Req() req: any,
+    @Body('dish_id') dish_id: number,
+    @Body('quantity') quantity: number,
+  ) {
+    return this.guestAuthService.updateDishInCart(+req.user.cart_id, dish_id, quantity);
+  }
+
+
+  @Delete('cart/:id')
+  @Public()
+  @UseGuards(JwtGuestAuthGuard)
+  @ResponseMessage('Delete dish in cart')
+  deleteDishInCart(
+    @Req() req: any,
+    @Param('id') id: string
+  ) {
+    return this.guestAuthService.deleteDishInCart(+req.user.cart_id, +id);
+  }
+
+
 }

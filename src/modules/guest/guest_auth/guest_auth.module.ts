@@ -13,6 +13,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtGuestStrategy } from './passport/jwt-guest.strategy';
 import { GuestModule } from '../guest.module';
 import { DishModule } from '@/modules/dish/dish.module';
+import { CartItemModule } from '@/modules/cart-item/cart-item.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { DishModule } from '@/modules/dish/dish.module';
       }),
     }),
     GuestModule,
+    CartItemModule,
     DishModule,
     CartModule,
     TableModule,

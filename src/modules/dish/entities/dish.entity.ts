@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { CartItem } from '@/modules/cart-item/entities/cart-item.entity';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('dish')
 export class Dish {
@@ -34,4 +35,7 @@ export class Dish {
 
     @DeleteDateColumn()
     deleted_at: Date;
+
+    @OneToMany(() => CartItem, (cartItem) => cartItem.dish)
+    cartItems: CartItem[];
 }

@@ -22,12 +22,17 @@ export class CartService {
     return `This action returns all cart`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cart`;
+  async findOne(id: number) {
+    return await this.cartRepository.findOneBy({ cart_id: id });
   }
 
-  update(id: number, updateCartDto: UpdateCartDto) {
-    return `This action updates a #${id} cart`;
+  async update(id: number, updateCartDto: UpdateCartDto) {
+    return await this.cartRepository.update(
+      { cart_id: id },
+      {
+        ...updateCartDto
+      }
+    );
   }
 
   remove(id: number) {

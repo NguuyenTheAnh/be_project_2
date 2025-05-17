@@ -1,5 +1,6 @@
+import { CartItem } from "@/modules/cart-item/entities/cart-item.entity";
 import { Guest } from "@/modules/guest/entities/guest.entity";
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('cart')
 export class Cart {
@@ -11,5 +12,8 @@ export class Cart {
 
     @OneToOne(() => Guest, guest => guest.cart)
     guest: Guest;
+
+    @OneToMany(() => CartItem, (cartItem) => cartItem.cart)
+    cartItems: CartItem[];
 
 }

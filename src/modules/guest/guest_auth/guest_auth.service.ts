@@ -10,6 +10,8 @@ import { Guest } from '../entities/guest.entity';
 import { Repository } from 'typeorm';
 import ms, { StringValue } from 'ms';
 import { Response } from 'express';
+import { CartItemService } from '@/modules/cart-item/cart-item.service';
+import { DishService } from '@/modules/dish/dish.service';
 
 @Injectable()
 export class GuestAuthService {
@@ -18,6 +20,8 @@ export class GuestAuthService {
     private configService: ConfigService,
     private cartService: CartService,
     private tableService: TableService,
+    private cartItemService: CartItemService,
+    private dishService: DishService,
 
     @InjectRepository(Guest)
     private guestRepository: Repository<Guest>,
@@ -51,7 +55,10 @@ export class GuestAuthService {
   }
 
   async login(guestName: string, table_id: number, response: Response) {
+    //update table status
+    await this.tableService.update(table_id, { status: "Unavailable", payment_status: "Unpaid" })
 
+    //create new guest and guest's cart
     const newCart = await this.cartService.create();
     const guest = await this.guestRepository.save({
       guest_name: guestName,
@@ -140,5 +147,66 @@ export class GuestAuthService {
     } catch (error) {
       throw new BadRequestException('Refresh token invalid. Please login')
     }
+  }
+
+  async addItemIntoCart(cart_id: number, dish_id: number) {
+    const cartItem = await this.cartItemService.findAll({ cart_id, dish_id });
+    if (cartItem.length === 0) {
+      const newCartItem = await this.cartItemService.create({ cart_id, dish_id, quantity: 1 });
+      //update total price in cart
+      const { price } = await this.dishService.findOne(dish_id);
+      const cart = await this.cartService.findOne(cart_id);
+      if (cart) {
+        const { total_cart } = cart;
+        await this.cartService.update(cart_id, { total_cart: total_cart + price });
+        return await this.cartService.findOne(cart_id);
+      }
+    }
+    else {
+      const currentQuantity = cartItem[0].quantity;
+      await this.cartItemService.update({ cart_id, dish_id, quantity: currentQuantity + 1 });
+
+      //update total cart
+      const { price } = await this.dishService.findOne(dish_id);
+      const cart = await this.cartService.findOne(cart_id);
+      if (cart) {
+        const { total_cart } = cart;
+        await this.cartService.update(cart_id, { total_cart: total_cart + price });
+        return await this.cartService.findOne(cart_id);
+      }
+      return;
+    }
+  }
+
+  async getAllItemCart(cart_id: number) {
+    return await this.cartItemService.findAll({ cart_id });
+  }
+
+  async updateDishInCart(cart_id: number, dish_id: number, quantity: number) {
+    const cartItem = await this.cartItemService.findAll({ cart_id, dish_id });
+    const currentQuantity = cartItem[0].quantity;
+    //update total price in cart
+    const { price } = await this.dishService.findOne(dish_id);
+    const cart = await this.cartService.findOne(cart_id);
+    if (cart) {
+      const { total_cart } = cart;
+      await this.cartService.update(cart_id, { total_cart: total_cart + price * (quantity - currentQuantity) });
+      return await this.cartItemService.update({ cart_id, dish_id, quantity });;
+    }
+    return await this.cartItemService.update({ cart_id, dish_id, quantity });;
+  }
+
+  async deleteDishInCart(cart_id: number, dish_id: number) {
+    //update total price in cart
+    const cartItem = await this.cartItemService.findAll({ cart_id, dish_id });
+    const currentQuantity = cartItem[0].quantity;
+    const { price } = await this.dishService.findOne(dish_id);
+    const cart = await this.cartService.findOne(cart_id);
+    if (cart) {
+      const { total_cart } = cart;
+      await this.cartService.update(cart_id, { total_cart: total_cart - price * currentQuantity });
+      return await this.cartItemService.remove(cart_id, dish_id);
+    }
+    return await this.cartItemService.remove(cart_id, dish_id);
   }
 }

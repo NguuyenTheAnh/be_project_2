@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
 import { FileModule } from './file/file.module';
 import { CartModule } from './modules/cart/cart.module';
 import { GuestAuthModule } from './modules/guest/guest_auth/guest_auth.module';
+import { CartItemModule } from './modules/cart-item/cart-item.module';
 
 @Module({
   imports: [
@@ -44,6 +45,8 @@ import { GuestAuthModule } from './modules/guest/guest_auth/guest_auth.module';
     FileModule,
 
     CartModule,
+
+    CartItemModule,
   ],
   controllers: [AppController],
   providers: [AppService],
