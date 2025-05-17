@@ -4,6 +4,8 @@ Guest
 - qr code -> api: if token expired or don't have token, show UI for entering guest's name -> save:
     + post /guest/:table_id (create new guest)
     + post /cart (create new cart)
+- login (name, response): name
+- api: @Public(), @ Use JWT
 
 Table:
 - create qr for each table

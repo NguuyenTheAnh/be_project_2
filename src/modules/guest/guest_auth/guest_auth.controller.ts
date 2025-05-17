@@ -1,0 +1,62 @@
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, Req, Query } from '@nestjs/common';
+import { GuestAuthService } from './guest_auth.service';
+import { Public, ResponseMessage } from '@/decorator/customize';
+import { Request, Response } from 'express';
+import { JwtGuestAuthGuard } from './guard/jwt-guest-auth.guard';
+import { GuestService } from '../guest.service';
+import { DishService } from '@/modules/dish/dish.service';
+
+@Controller('guest-auth')
+export class GuestAuthController {
+  constructor(
+    private readonly guestAuthService: GuestAuthService,
+    private guestService: GuestService,
+    private dishService: DishService
+  ) { }
+
+  @Public()
+  @Get('refresh')
+  @ResponseMessage('Get guest by refresh token')
+  handleRefreshToken(
+    @Req() request: Request,
+    @Res({ passthrough: true }) response: Response
+  ) {
+    const refreshToken = request.cookies['refresh_token_guest'];
+    return this.guestAuthService.processNewToken(refreshToken, response);
+  }
+
+  @Public()
+  @UseGuards(JwtGuestAuthGuard)
+  @ResponseMessage('Get guest information')
+  @Get('profile')
+  getProfile(@Req() req: any) {
+    return this.guestService.findOne(req.user.guest_id);
+  }
+
+  @Public()
+  @ResponseMessage('Guest login')
+  @Post('login')
+  login(
+    @Body('guest_name') guest_name: string,
+    @Body('table_id') table_id: number,
+    @Res({ passthrough: true }) response: Response
+
+  ) {
+    return this.guestAuthService.login(guest_name, table_id, response);
+  }
+
+  @Get('menu')
+  @Public()
+  @ResponseMessage('Get menu by guest id')
+  @UseGuards(JwtGuestAuthGuard)
+  getMenu(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 6,
+    @Query('category') category: 'Chicken' | 'Water' = 'Chicken',
+    @Query('status') status: 'Available' | 'Unavailable' = 'Available',
+    @Query('search') search: string = '',
+    @Query('sort') sort: 'asc' | 'desc' = 'asc'
+  ) {
+    return this.dishService.findAll(page, limit, category, status, search, sort);
+  }
+}

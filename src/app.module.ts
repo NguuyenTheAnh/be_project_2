@@ -13,6 +13,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { FileModule } from './file/file.module';
 import { CartModule } from './modules/cart/cart.module';
+import { GuestAuthModule } from './modules/guest/guest_auth/guest_auth.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { CartModule } from './modules/cart/cart.module';
     DishModule,
     GuestModule,
     TransactionModule,
+    GuestAuthModule,
 
     // Configure TypeORM dynamically using ConfigService
     TypeOrmModule.forRootAsync({

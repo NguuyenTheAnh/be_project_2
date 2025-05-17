@@ -9,7 +9,7 @@ import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
+export class JwtAuthGuard extends AuthGuard('jwt-management') {
     constructor(private reflector: Reflector) {
         super();
     }
@@ -29,7 +29,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     handleRequest(err, user, info) {
         // You can throw an exception based on either "info" or "err" arguments
         if (err || !user) {
-            throw err || new UnauthorizedException("Token is expired or don't have token in header");
+            throw err || new UnauthorizedException("Invalid token or token expired");
         }
         return user;
     }

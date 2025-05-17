@@ -2,7 +2,7 @@ import { Cart } from '@/modules/cart/entities/cart.entity';
 import { Table } from '@/modules/table/entities/table.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
 
-@Entity()
+@Entity('guest')
 export class Guest {
     @PrimaryGeneratedColumn()
     guest_id: number;
@@ -19,12 +19,12 @@ export class Guest {
     table: Table;
 
     @Column()
-    table_id: number; // Optional: useful for query building or raw access
+    table_id: number;
 
-    // // Cart: One guest has one cart
-    // @OneToOne(() => Cart, { eager: false })
-    // @JoinColumn({ name: 'cart_id' })
-    // cart: Cart;
+    // Cart: One guest has one cart
+    @OneToOne(() => Cart, { eager: false })
+    @JoinColumn({ name: 'cart_id' })
+    cart: Cart;
 
     @Column()
     cart_id: number; // Optional: similar to table_id

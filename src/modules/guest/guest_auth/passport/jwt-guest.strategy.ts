@@ -5,13 +5,13 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt-management') {
+export class JwtGuestStrategy extends PassportStrategy(Strategy, 'jwt-guest') {
     constructor(
         private configService: ConfigService
     ) {
         // decode token
         super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: ExtractJwt.fromHeader('access_token_guest'),
             ignoreExpiration: false,
             secretOrKey: configService.get<string>('JWT_ACCESS_TOKEN_SECRET') as string,
         });
@@ -19,14 +19,14 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt-management') {
 
     // validate return data stored in req.user
     async validate(payload: any) {
-        const { account_id, email, role, phone, name } = payload;
+        const { guest_id, guest_name, cart_id, table_id, table_name } = payload;
 
         return {
-            account_id,
-            email,
-            role,
-            phone,
-            name
+            guest_id,
+            guest_name,
+            cart_id,
+            table_id,
+            table_name
         };
     }
 

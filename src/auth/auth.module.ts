@@ -13,7 +13,6 @@ import { JwtStrategy } from './passport/jwt.strategy';
   imports: [
     AccountModule,
     PassportModule,
-
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
