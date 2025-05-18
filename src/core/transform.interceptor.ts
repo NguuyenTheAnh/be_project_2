@@ -7,7 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { RESPONSE_MESSAGE } from 'src/decorator/customize';
+import { RESPONSE_MESSAGE, SKIP_TRANSFORM_KEY } from 'src/decorator/customize';
 
 export interface Response<T> {
     statusCode: number;
@@ -23,6 +23,10 @@ export class TransformInterceptor<T>
         context: ExecutionContext,
         next: CallHandler,
     ): Observable<Response<T>> {
+        const skip = this.reflector.get<boolean>(SKIP_TRANSFORM_KEY, context.getHandler());
+        if (skip) {
+            return next.handle(); // Skip transformation
+        }
         return next
             .handle()
             .pipe(

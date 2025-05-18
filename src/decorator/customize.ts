@@ -9,3 +9,6 @@ export const ResponseMessage = (message: string) =>
 
 export const IS_PUBLIC_GUEST_KEY = 'isPublicGuest';
 export const PublicGuest = () => SetMetadata(IS_PUBLIC_GUEST_KEY, true);
+
+export const SKIP_TRANSFORM_KEY = 'skipTransform';
+export const SkipTransform = () => SetMetadata(SKIP_TRANSFORM_KEY, true);

@@ -19,7 +19,7 @@ export class DishController {
     @Query('category') category: 'Chicken' | 'Water' = 'Chicken',
     @Query('status') status: 'Available' | 'Unavailable' = 'Available',
     @Query('search') search: string = '',
-    @Query('sort') sort: 'asc' | 'desc' = 'asc',
+    @Query('sort') sort: 'ASC' | 'DESC' = 'ASC',
   ) {
     return this.dishService.findAll(page, limit, category, status, search, sort);
   }

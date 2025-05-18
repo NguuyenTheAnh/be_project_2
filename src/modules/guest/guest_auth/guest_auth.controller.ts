@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, Req, Query } from '@nestjs/common';
 import { GuestAuthService } from './guest_auth.service';
-import { Public, ResponseMessage } from '@/decorator/customize';
+import { Public, ResponseMessage, SkipTransform } from '@/decorator/customize';
 import { Request, Response } from 'express';
 import { JwtGuestAuthGuard } from './guard/jwt-guest-auth.guard';
 import { GuestService } from '../guest.service';
@@ -55,7 +55,7 @@ export class GuestAuthController {
     @Query('category') category: 'Chicken' | 'Water' = 'Chicken',
     @Query('status') status: 'Available' | 'Unavailable' = 'Available',
     @Query('search') search: string = '',
-    @Query('sort') sort: 'asc' | 'desc' = 'asc'
+    @Query('sort') sort: 'ASC' | 'DESC' = 'ASC'
   ) {
     return this.dishService.findAll(page, limit, category, status, search, sort);
   }
@@ -104,6 +104,29 @@ export class GuestAuthController {
   ) {
     return this.guestAuthService.deleteDishInCart(+req.user.cart_id, +id);
   }
+
+
+  @Post('order')
+  @Public()
+  @UseGuards(JwtGuestAuthGuard)
+  @ResponseMessage('Guest order')
+  orderAllItemInCart(
+    @Req() req: any,
+  ) {
+    return this.guestAuthService.orderAllItemInCart(+req.user.guest_id, +req.user.table_id, +req.user.cart_id);
+  }
+
+  @Post('order/callback/:order_id')
+  @Public()
+  @SkipTransform()
+  @ResponseMessage('Guest order callback')
+  orderCallback(
+    @Body() body: any,
+    @Param('order_id') order_id: string
+  ) {
+    return this.guestAuthService.orderCallback(body, +order_id);
+  }
+
 
 
 }

@@ -23,7 +23,7 @@ export class TableService {
     payment_status: string,
     status: string,
     search: string,
-    sort: 'asc' | 'desc',
+    sort: 'ASC' | 'DESC',
   ) {
     const offset = (page - 1) * limit;
 

@@ -14,6 +14,8 @@ import { JwtGuestStrategy } from './passport/jwt-guest.strategy';
 import { GuestModule } from '../guest.module';
 import { DishModule } from '@/modules/dish/dish.module';
 import { CartItemModule } from '@/modules/cart-item/cart-item.module';
+import { OrderModule } from '@/modules/order/order.module';
+import { TransactionModule } from '@/modules/transaction/transaction.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { CartItemModule } from '@/modules/cart-item/cart-item.module';
     }),
     GuestModule,
     CartItemModule,
+    TransactionModule,
+    OrderModule,
     DishModule,
     CartModule,
     TableModule,

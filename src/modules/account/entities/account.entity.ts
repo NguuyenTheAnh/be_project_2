@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, DeleteDateColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Order } from '@/modules/order/entities/order.entity';
+import { Entity, PrimaryGeneratedColumn, Column, DeleteDateColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 
 @Entity('account')
 export class Account {
@@ -25,6 +26,9 @@ export class Account {
 
     @Column({ length: 500, nullable: true })
     refresh_token: string;
+
+    @OneToMany(() => Order, (order) => order.orderHandler)
+    orders: Order[];
 
     @CreateDateColumn()
     created_at: Date;

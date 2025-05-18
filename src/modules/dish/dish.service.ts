@@ -24,7 +24,7 @@ export class DishService {
     category: string,
     status: string,
     search: string,
-    sort: 'asc' | 'desc',
+    sort: 'ASC' | 'DESC',
   ) {
     const offset = (page - 1) * limit;
 

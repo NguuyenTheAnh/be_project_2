@@ -21,7 +21,7 @@ export class TableController {
     @Query('payment_status') payment_status: 'Paid' | 'Unpaid',
     @Query('status') status: 'Available' | 'Unavailable',
     @Query('search') search: string = '',
-    @Query('sort') sort: 'asc' | 'desc' = 'asc',
+    @Query('sort') sort: 'ASC' | 'DESC' = 'ASC',
   ) {
     return this.tableService.findAll(page, limit, payment_status, status, search, sort);
   }

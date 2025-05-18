@@ -1,4 +1,6 @@
 import { Guest } from '@/modules/guest/entities/guest.entity';
+import { Order } from '@/modules/order/entities/order.entity';
+import { Transaction } from '@/modules/transaction/entities/transaction.entity';
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('table')
@@ -26,6 +28,12 @@ export class Table {
 
     @OneToMany(() => Guest, guest => guest.table)
     guests: Guest[];
+
+    @OneToMany(() => Order, (order) => order.table)
+    orders: Order[];
+
+    @OneToMany(() => Transaction, (transaction) => transaction.table)
+    transactions: Transaction[];
 
     @CreateDateColumn()
     created_at: Date;

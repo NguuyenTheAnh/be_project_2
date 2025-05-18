@@ -1,6 +1,7 @@
 import { Cart } from '@/modules/cart/entities/cart.entity';
+import { Order } from '@/modules/order/entities/order.entity';
 import { Table } from '@/modules/table/entities/table.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 
 @Entity('guest')
 export class Guest {
@@ -28,4 +29,7 @@ export class Guest {
 
     @Column()
     cart_id: number; // Optional: similar to table_id
+
+    @OneToMany(() => Order, (order) => order.guest)
+    orders: Order[];
 }
