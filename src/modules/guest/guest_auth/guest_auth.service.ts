@@ -92,6 +92,7 @@ export class GuestAuthService {
     await this.updateUserToken(refresh_token, guest.guest_id);
 
     // set cookie
+    response.clearCookie('refresh_token_guest');
     response.cookie('refresh_token_guest', refresh_token, {
       maxAge: ms(this.configService.get<string>('JWT_REFRESH_EXPIRE') as StringValue),
       httpOnly: true
@@ -237,7 +238,7 @@ export class GuestAuthService {
     }
 
     const embed_data = {
-      redirecturl: `${this.configService.get<string>('FRONTEND_URL')}/guest?table_id=${order.table_id}`
+      redirecturl: `${this.configService.get<string>('FRONTEND_URL')}/wish?table_id=${order.table_id}`
     };
 
     const items = order.guest.cart.cartItems.map((item) => ({
