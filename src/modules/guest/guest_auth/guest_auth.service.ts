@@ -346,7 +346,7 @@ export class GuestAuthService {
             table_id: order.table_id,
             amount_in: order.total_order,
             amount_out: 0,
-            accumulated: +(currentAccumulated + order.total_order),
+            accumulated: +(+(currentAccumulated) + (+(order.total_order))),
           })
         }
 
