@@ -338,7 +338,7 @@ export class GuestAuthService {
           })
         }
         else {
-          const currentAccumulated = allTransactions[allTransactions.length - 1].accumulated;
+          const currentAccumulated = allTransactions[0].accumulated;
           this.transactionService.create({
             transaction_id: dataJson.app_trans_id,
             transaction_date: dataJson.app_time,

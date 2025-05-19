@@ -18,7 +18,7 @@ export class TransactionService {
   }
 
   async findAll() {
-    return await this.transactionRepository.find({ relations: ['table'], order: { created_at: 'ASC' } });
+    return await this.transactionRepository.find({ relations: ['table'], order: { created_at: 'DESC' } });
   }
 
   async findOne(transaction_id: string) {

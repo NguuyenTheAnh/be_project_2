@@ -55,7 +55,7 @@ export class OrderService {
       .where(whereCondition)
       .take(limit)
       .skip(offset)
-      .orderBy('order.total_order', sort);
+      .orderBy('order.updated_at', sort);
 
     const [orders, totalOrders] = await query.getManyAndCount();
 

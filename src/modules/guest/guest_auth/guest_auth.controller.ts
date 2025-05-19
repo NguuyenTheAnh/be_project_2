@@ -127,6 +127,19 @@ export class GuestAuthController {
     return this.guestAuthService.orderCallback(body, +order_id);
   }
 
+  @Public()
+  @ResponseMessage('Delete guest cookie')
+  @Get('cookie/delete')
+  deleteCookie(
+    @Res({ passthrough: true }) response: Response
+
+  ) {
+    response.clearCookie('refresh_token_guest');
+    return {
+      refresh_token_guest: null,
+    };
+  }
+
 
 
 }
