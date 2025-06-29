@@ -18,12 +18,45 @@ export class AccountService {
     return await this.accountRepository.save(newAccount);
   }
 
-  findAll() {
-    return `This action returns all account`;
+  async findAll() {
+    return await this.accountRepository.find({
+      where: { role: 'Employee' },
+      select: {
+        account_id: true,
+        name: true,
+        email: true,
+        role: true,
+        phone: true,
+        is_active: true,
+        created_at: true,
+        updated_at: true
+      },
+      order: {
+        created_at: 'DESC'
+      }
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} account`;
+  async findOne(id: number) {
+    const account = await this.accountRepository.findOne({
+      where: { account_id: id },
+      select: {
+        account_id: true,
+        name: true,
+        email: true,
+        role: true,
+        phone: true,
+        is_active: true,
+        created_at: true,
+        updated_at: true
+      }
+    });
+
+    if (!account) {
+      throw new Error(`Account with ID ${id} not found`);
+    }
+
+    return account;
   }
 
   async update(id: number, updateAccountDto: UpdateAccountDto) {

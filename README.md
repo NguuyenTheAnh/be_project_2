@@ -1,99 +1,221 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Restaurant Table Ordering System - Backend API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Hệ thống API backend cho ứng dụng đặt đồ ăn tại bàn nhà hàng, được xây dựng bằng NestJS và TypeORM.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Tổng quan dự án
 
-## Description
+Đây là hệ thống backend cho một ứng dụng đặt đồ ăn tại bàn nhà hàng. Hệ thống cho phép khách hàng đặt món ăn trực tiếp tại bàn mà không cần gọi nhân viên, đồng thời cung cấp các tính năng quản lý cho nhà hàng.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🛠️ Công nghệ sử dụng
 
-## Project setup
+- **Framework**: NestJS 11.x
+- **Database**: PostgreSQL
+- **ORM**: TypeORM 0.3.x
+- **Authentication**: JWT + Passport
+- **Language**: TypeScript
+- **Runtime**: Node.js
 
+## 📦 Cài đặt
+
+### Yêu cầu hệ thống
+- Node.js >= 16
+- PostgreSQL
+- npm hoặc yarn
+
+### Cài đặt dependencies
 ```bash
-$ npm install
+npm install
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+### Cấu hình môi trường
+Tạo file `.env` với các biến sau:
+```env
+PORT=3000
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=your_username
+DB_PASSWORD=your_password
+DB_NAME=restaurant_db
+DB_SYNC=true
+JWT_SECRET=your_jwt_secret
+JWT_REFRESH_SECRET=your_refresh_secret
 ```
 
-## Run tests
+## 🚀 Chạy ứng dụng
 
 ```bash
-# unit tests
-$ npm run test
+# Development mode
+npm run dev
 
-# e2e tests
-$ npm run test:e2e
+# Production mode
+npm run start:prod
 
-# test coverage
-$ npm run test:cov
+# Debug mode
+npm run start:debug
 ```
 
-## Deployment
+## 🏗️ Kiến trúc dự án
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### Core Modules
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+#### 1. **Authentication & Authorization**
+- **JWT Authentication**: Xác thực người dùng admin
+- **Guest Authentication**: Hệ thống xác thực riêng cho khách hàng
+- **Guards**: Bảo vệ các endpoint quan trọng
 
+#### 2. **Restaurant Management**
+- **Table Module**: Quản lý bàn ăn
+  - Tạo, cập nhật, xóa bàn
+  - Theo dõi trạng thái bàn (Available/Unavailable)
+  - Quản lý trạng thái thanh toán (Paid/Unpaid)
+  - Phân trang và tìm kiếm
+
+- **Dish Module**: Quản lý món ăn
+  - CRUD operations cho món ăn
+  - Phân loại món (Chicken/Water)
+  - Quản lý trạng thái món ăn
+  - Upload và quản lý hình ảnh
+  - Tìm kiếm và lọc món ăn
+
+#### 3. **Order Management**
+- **Order Module**: Xử lý đơn hàng
+  - Tạo đơn hàng mới
+  - Theo dõi trạng thái đơn (Pending/Completed)
+  - Lịch sử đơn hàng
+
+- **Cart Module**: Giỏ hàng
+  - Tạo giỏ hàng cho khách
+  - Quản lý session giỏ hàng
+
+- **Cart Item Module**: Chi tiết giỏ hàng
+  - Thêm/xóa/cập nhật món trong giỏ
+  - Quản lý số lượng
+
+#### 4. **Customer Management**
+- **Guest Module**: Quản lý khách hàng
+  - Đăng ký khách tạm thời
+  - Liên kết với bàn ăn
+  - Xem menu và đặt món
+
+- **Account Module**: Quản lý tài khoản admin
+  - Đăng ký/đăng nhập admin
+  - Quản lý thông tin tài khoản
+
+#### 5. **Payment & Transaction**
+- **Transaction Module**: Xử lý giao dịch
+  - Lưu trữ lịch sử thanh toán
+  - Theo dõi doanh thu
+
+### Database Schema
+
+#### Entities chính:
+- **Table**: Thông tin bàn ăn (ID, tên, sức chứa, trạng thái)
+- **Dish**: Món ăn (ID, tên, giá, mô tả, hình ảnh, danh mục)
+- **Guest**: Khách hàng (liên kết với bàn)
+- **Order**: Đơn hàng
+- **Cart**: Giỏ hàng
+- **CartItem**: Chi tiết giỏ hàng (món ăn + số lượng)
+- **Transaction**: Giao dịch thanh toán
+
+## 🔐 API Authentication
+
+### Admin Authentication
+- **POST** `/auth/login` - Đăng nhập admin
+- **POST** `/auth/register` - Đăng ký admin
+- **GET** `/auth/refresh` - Làm mới token
+
+### Guest Authentication
+- Hệ thống riêng cho khách hàng tại bàn
+- Không yêu cầu đăng ký phức tạp
+
+## 📁 File Upload
+
+Hệ thống hỗ trợ upload hình ảnh món ăn:
+- **File Module**: Xử lý upload file
+- **Static Assets**: Phục vụ hình ảnh từ thư mục `public/`
+- **Multer Configuration**: Cấu hình upload file
+
+## 🛡️ Security Features
+
+- **Global Guards**: Bảo vệ toàn bộ API
+- **Validation Pipes**: Validate dữ liệu đầu vào
+- **Transform Interceptor**: Chuẩn hóa response
+- **CORS**: Cấu hình Cross-Origin Resource Sharing
+- **Cookie Parser**: Xử lý cookie cho authentication
+
+## 📊 API Features
+
+- **Pagination**: Phân trang cho tất cả danh sách
+- **Filtering**: Lọc theo nhiều tiêu chí
+- **Sorting**: Sắp xếp dữ liệu
+- **Search**: Tìm kiếm theo từ khóa
+- **Standardized Response**: Chuẩn hóa format response
+
+## 🎯 Workflow hoạt động
+
+1. **Khách hàng vào bàn**: Quét QR code hoặc nhập mã bàn
+2. **Xem menu**: Browse danh sách món ăn với hình ảnh
+3. **Thêm vào giỏ**: Chọn món và số lượng
+4. **Đặt hàng**: Xác nhận đơn hàng
+5. **Theo dõi**: Xem trạng thái đơn hàng
+6. **Thanh toán**: Thực hiện thanh toán
+
+## 🔧 Development
+
+### Cấu trúc thư mục
+```
+src/
+├── auth/                 # Authentication module
+├── config/              # Database & app configuration
+├── core/                # Core interceptors
+├── decorator/           # Custom decorators
+├── file/                # File upload module
+├── helper/              # Utility helpers
+└── modules/             # Business modules
+    ├── account/         # Admin account management
+    ├── cart/            # Shopping cart
+    ├── cart-item/       # Cart items
+    ├── dish/            # Menu items
+    ├── guest/           # Guest management
+    ├── order/           # Order processing
+    ├── table/           # Table management
+    └── transaction/     # Payment transactions
+```
+
+### Scripts có sẵn
 ```bash
-$ npm install -g mau
-$ mau deploy
+npm run build          # Build production
+npm run start          # Start production
+npm run dev           # Development with watch
+npm run lint          # Run ESLint
+npm run test          # Run tests
+npm run test:watch    # Watch mode tests
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 📝 API Documentation
 
-## Resources
+API endpoints được tổ chức theo modules:
 
-Check out a few resources that may come in handy when working with NestJS:
+- `/auth/*` - Authentication endpoints
+- `/table/*` - Table management
+- `/dish/*` - Menu management  
+- `/order/*` - Order processing
+- `/cart/*` - Shopping cart
+- `/guest/*` - Guest management
+- `/transaction/*` - Payment processing
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 🤝 Contributing
 
-## Support
+1. Fork the project
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 📄 License
 
-## Stay in touch
+Dự án này thuộc quyền sở hữu riêng tư (UNLICENSED).
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+---
 
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
-# project_2
+**Developed with ❤️ using NestJS**
