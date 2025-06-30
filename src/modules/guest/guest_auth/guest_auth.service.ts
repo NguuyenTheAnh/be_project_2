@@ -14,6 +14,7 @@ import { CartItemService } from '@/modules/cart-item/cart-item.service';
 import { DishService } from '@/modules/dish/dish.service';
 import { OrderService } from '@/modules/order/order.service';
 import { TransactionService } from '@/modules/transaction/transaction.service';
+import { NotificationGateway } from '@/websocket/websocket.gateway';
 
 const axios = require('axios').default; // npm install axios
 const CryptoJS = require('crypto-js'); // npm install crypto-js
@@ -30,6 +31,7 @@ export class GuestAuthService {
     private dishService: DishService,
     private orderService: OrderService,
     private transactionService: TransactionService,
+    private notificationGateway: NotificationGateway,
 
 
     @InjectRepository(Guest)
@@ -320,6 +322,35 @@ export class GuestAuthService {
           throw new NotFoundException('Not found payment ordered')
         }
         this.tableService.update(order.table_id, { payment_status: 'Paid' });
+
+        // Get table information for notification
+        const table = await this.tableService.findOne(order.table_id);
+
+        // Send real-time notification to admin
+        this.notificationGateway.sendPaymentSuccessNotification({
+          table_id: order.table_id,
+          table_name: table?.table_name || `Bàn ${order.table_id}`,
+          order_id: order.order_id,
+          amount: order.total_order,
+          guest_name: order.guest?.guest_name || 'Khách hàng',
+          timestamp: new Date().toISOString(),
+        });
+
+        // Send table status update notification
+        this.notificationGateway.sendTableStatusUpdate({
+          table_id: order.table_id,
+          table_name: table?.table_name || `Bàn ${order.table_id}`,
+          status: table?.status || 'Unavailable',
+          payment_status: 'Paid',
+        });
+
+        // Send order status update notification
+        this.notificationGateway.sendOrderStatusUpdate({
+          order_id: order.order_id,
+          table_name: table?.table_name || `Bàn ${order.table_id}`,
+          status: 'Completed',
+          total_order: order.total_order,
+        });
 
         //create transaction
         const allTransactions = await this.transactionService.findAll();

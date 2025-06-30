@@ -16,6 +16,7 @@ import { DishModule } from '@/modules/dish/dish.module';
 import { CartItemModule } from '@/modules/cart-item/cart-item.module';
 import { OrderModule } from '@/modules/order/order.module';
 import { TransactionModule } from '@/modules/transaction/transaction.module';
+import { WebSocketModule } from '@/websocket/websocket.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { TransactionModule } from '@/modules/transaction/transaction.module';
     DishModule,
     CartModule,
     TableModule,
+    WebSocketModule,
   ],
   controllers: [GuestAuthController],
   providers: [GuestAuthService, JwtGuestStrategy],

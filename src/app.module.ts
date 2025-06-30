@@ -15,6 +15,7 @@ import { FileModule } from './file/file.module';
 import { CartModule } from './modules/cart/cart.module';
 import { GuestAuthModule } from './modules/guest/guest_auth/guest_auth.module';
 import { CartItemModule } from './modules/cart-item/cart-item.module';
+import { WebSocketModule } from './websocket/websocket.module';
 
 @Module({
   imports: [
@@ -47,6 +48,8 @@ import { CartItemModule } from './modules/cart-item/cart-item.module';
     CartModule,
 
     CartItemModule,
+
+    WebSocketModule,
   ],
   controllers: [AppController],
   providers: [AppService],
