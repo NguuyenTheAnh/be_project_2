@@ -95,6 +95,43 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
     console.log(`Order status update sent for order ${data.order_id}`);
   }
 
+  // Send guest login notification
+  sendGuestLoginNotification(data: {
+    table_id: number;
+    table_name: string;
+    guest_id: number;
+    guest_name: string;
+    timestamp: string;
+  }) {
+    this.server.emit('guest-login', {
+      type: 'GUEST_LOGIN',
+      message: `Khách hàng ${data.guest_name} đã ngồi vào ${data.table_name}`,
+      data: data,
+      timestamp: data.timestamp,
+    });
+
+    console.log(`Guest login notification sent for ${data.guest_name} at table ${data.table_name}`);
+  }
+
+  // Send table occupied notification
+  sendTableOccupiedNotification(data: {
+    table_id: number;
+    table_name: string;
+    guest_name: string;
+    previous_status: string;
+    new_status: string;
+    timestamp: string;
+  }) {
+    this.server.emit('table-occupied', {
+      type: 'TABLE_OCCUPIED',
+      message: `${data.table_name} đã được khách hàng ${data.guest_name} sử dụng`,
+      data: data,
+      timestamp: data.timestamp,
+    });
+
+    console.log(`Table occupied notification sent for table ${data.table_name}`);
+  }
+
   // General notification method
   sendNotification(type: string, message: string, data?: any) {
     this.server.emit('notification', {

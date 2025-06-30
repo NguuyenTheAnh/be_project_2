@@ -79,6 +79,32 @@ export class GuestAuthService {
 
     const table = await this.tableService.findOne(table_id);
 
+    // Send real-time notifications to admin
+    this.notificationGateway.sendGuestLoginNotification({
+      table_id: table_id,
+      table_name: table?.table_name || `Bàn ${table_id}`,
+      guest_id: guest.guest_id,
+      guest_name: guestName,
+      timestamp: new Date().toISOString(),
+    });
+
+    this.notificationGateway.sendTableOccupiedNotification({
+      table_id: table_id,
+      table_name: table?.table_name || `Bàn ${table_id}`,
+      guest_name: guestName,
+      previous_status: 'Available',
+      new_status: 'Unavailable',
+      timestamp: new Date().toISOString(),
+    });
+
+    // Send table status update notification
+    this.notificationGateway.sendTableStatusUpdate({
+      table_id: table_id,
+      table_name: table?.table_name || `Bàn ${table_id}`,
+      status: 'Unavailable',
+      payment_status: 'Unpaid',
+    });
+
     const payload = {
       sub: "token login",
       iss: "from server",
