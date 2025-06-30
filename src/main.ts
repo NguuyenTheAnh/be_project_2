@@ -23,8 +23,10 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get('PORT') || 3000;
 
-  //config static assets
-  app.useStaticAssets(join(__dirname, '..', 'public'));
+  //config static assets with /api prefix
+  app.useStaticAssets(join(__dirname, '..', 'public'), {
+    prefix: '/api/',
+  });
 
   // config cors
   app.enableCors(
