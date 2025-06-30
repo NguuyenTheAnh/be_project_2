@@ -11,10 +11,10 @@ Hệ thống đã được mở rộng để gửi thông báo real-time khi kh�
 ```javascript
 {
   type: 'GUEST_LOGIN',
-  message: 'Khách hàng Nguyễn Văn A đã ngồi vào Bàn 5',
+  message: 'Guest Nguyễn Văn A has joined Table 5',
   data: {
     table_id: 5,
-    table_name: 'Bàn 5',
+    table_name: 'Table 5',
     guest_id: 123,
     guest_name: 'Nguyễn Văn A',
     timestamp: '2025-07-01T10:30:00.000Z'
@@ -28,10 +28,10 @@ Hệ thống đã được mở rộng để gửi thông báo real-time khi kh�
 ```javascript
 {
   type: 'TABLE_OCCUPIED',
-  message: 'Bàn 5 đã được khách hàng Nguyễn Văn A sử dụng',
+  message: 'Table 5 is now occupied by Nguyễn Văn A',
   data: {
     table_id: 5,
-    table_name: 'Bàn 5',
+    table_name: 'Table 5',
     guest_name: 'Nguyễn Văn A',
     previous_status: 'Available',
     new_status: 'Unavailable',
@@ -46,10 +46,10 @@ Hệ thống đã được mở rộng để gửi thông báo real-time khi kh�
 ```javascript
 {
   type: 'TABLE_STATUS_UPDATE',
-  message: 'Trạng thái bàn Bàn 5 đã được cập nhật',
+  message: 'Table Table 5 status has been updated',
   data: {
     table_id: 5,
-    table_name: 'Bàn 5',
+    table_name: 'Table 5',
     status: 'Unavailable',
     payment_status: 'Unpaid'
   },

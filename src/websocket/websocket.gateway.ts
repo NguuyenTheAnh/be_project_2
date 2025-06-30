@@ -53,7 +53,7 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
   }) {
     this.server.emit('payment-success', {
       type: 'PAYMENT_SUCCESS',
-      message: `Thanh toán thành công tại ${data.table_name}`,
+      message: `Payment successful at ${data.table_name}`,
       data: data,
       timestamp: data.timestamp,
     });
@@ -70,7 +70,7 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
   }) {
     this.server.emit('table-status-update', {
       type: 'TABLE_STATUS_UPDATE',
-      message: `Trạng thái bàn ${data.table_name} đã được cập nhật`,
+      message: `Table ${data.table_name} status has been updated`,
       data: data,
       timestamp: new Date().toISOString(),
     });
@@ -87,7 +87,7 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
   }) {
     this.server.emit('order-status-update', {
       type: 'ORDER_STATUS_UPDATE',
-      message: `Đơn hàng tại ${data.table_name} đã được cập nhật`,
+      message: `Order at ${data.table_name} has been updated`,
       data: data,
       timestamp: new Date().toISOString(),
     });
@@ -105,7 +105,7 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
   }) {
     this.server.emit('guest-login', {
       type: 'GUEST_LOGIN',
-      message: `Khách hàng ${data.guest_name} đã ngồi vào ${data.table_name}`,
+      message: `Guest ${data.guest_name} has joined ${data.table_name}`,
       data: data,
       timestamp: data.timestamp,
     });
@@ -124,7 +124,7 @@ export class NotificationGateway implements OnGatewayConnection, OnGatewayDiscon
   }) {
     this.server.emit('table-occupied', {
       type: 'TABLE_OCCUPIED',
-      message: `${data.table_name} đã được khách hàng ${data.guest_name} sử dụng`,
+      message: `${data.table_name} is now occupied by ${data.guest_name}`,
       data: data,
       timestamp: data.timestamp,
     });
